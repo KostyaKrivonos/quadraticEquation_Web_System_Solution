@@ -1,35 +1,25 @@
-package com.example.quadratic.quadratic.model.dto;
+package com.example.quadratic.quadratic.request;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.Entity;
-
-/**
- * Kostya Krivonos
- * 2/4/19
- * 5:38 PM
- */
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuadraticEquationDto {
-    private int id;
+public class QuadraticEquationRequest {
 
+    @NonNull
     private double a;
 
+    @NonNull
     private double b;
 
+    @NonNull
     private double c;
-
-    private double D;
-
-    private double x1;
-
-    private double x2;
-
 }
