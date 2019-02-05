@@ -1,0 +1,34 @@
+spring:
+  profiles:
+    active: default
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  application:
+    name: quadratic
+  datasource:
+    url: jdbc:postgresql://localhost:5435/quadratic_equation
+    driver-class-name: org.postgresql.Driver
+    username: root
+    password: iamgroot
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    show-sql: false
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+      ddl-auto: update
+    database: postgresql
+    generate-ddl: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+          time_zone: UTC
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+server:
+  port: 8080

@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Kostya Krivonos
@@ -14,13 +12,16 @@ import javax.persistence.Id;
  * 3:42 PM
  */
 
-@Data
+
 @Entity
+@Table(name = "equation")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuadraticEquation {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     @Column(nullable = false)
     private double a;

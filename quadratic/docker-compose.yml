@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+
+    fly_easy_db:
+        image: postgres:9.6.5-alpine
+        restart: always
+        ports:
+            - 5435:5432
+        environment:
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: iamgroot
+            POSTGRES_DB: quadratic_equation
+        volumes:
+        - "/home/airthereum/accounts-data:/var/lib/postgresql/accounts-data"
+        container_name: equation
