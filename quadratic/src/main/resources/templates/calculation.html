@@ -9,7 +9,7 @@
 <h1>Calculation:</h1>
 
 <form th:action="@{/calculation}"
-      th:object="${equationForm}" method="POST">
+      th:object="${equationRequest}" method="POST">
     a:
     <input type="text" th:field="*{a}"/>
     <br/>

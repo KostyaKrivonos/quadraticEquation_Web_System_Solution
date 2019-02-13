@@ -12,5 +12,5 @@ services:
             POSTGRES_PASSWORD: iamgroot
             POSTGRES_DB: quadratic_equation
         volumes:
-        - "/home/airthereum/accounts-data:/var/lib/postgresql/accounts-data"
+        - "/home/accounts-data:/var/lib/postgresql/accounts-data"
         container_name: equation
