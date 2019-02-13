@@ -23,9 +23,8 @@ public class QuadraticEquationService {
     private ModelMapper modelMapper;
 
     @Autowired
-    public QuadraticEquationService(QuadraticEquationRepository quadraticEquationRepository, ModelMapper modelMapper) {
+    public QuadraticEquationService(QuadraticEquationRepository quadraticEquationRepository) {
         this.quadraticEquationRepository = quadraticEquationRepository;
-        this.modelMapper = modelMapper;
     }
 
     public HttpStatus calculate(QuadraticEquationRequest request) {

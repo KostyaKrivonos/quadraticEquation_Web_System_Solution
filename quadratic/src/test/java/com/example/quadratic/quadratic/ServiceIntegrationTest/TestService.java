@@ -1,8 +1,8 @@
 package com.example.quadratic.quadratic.ServiceIntegrationTest;
 
-import com.example.quadratic.controller.EquationController;
 import com.example.quadratic.exception.NoSolutionEquationException;
 import com.example.quadratic.model.dto.QuadraticEquationDto;
+import com.example.quadratic.repository.QuadraticEquationRepository;
 import com.example.quadratic.request.QuadraticEquationRequest;
 import com.example.quadratic.service.QuadraticEquationService;
 import org.junit.Before;
@@ -22,12 +22,12 @@ import static org.mockito.Mockito.when;
  */
 
 public class TestService {
-    private EquationController equationController;
+    private QuadraticEquationService equationService;
 
     @Before
     public void setup() {
-        QuadraticEquationService equationService = mock(QuadraticEquationService.class);
-        equationController = new EquationController(equationService);
+        QuadraticEquationRepository equationRepository = mock(QuadraticEquationRepository.class);
+        equationService = new QuadraticEquationService (equationRepository);
 
     }
 
