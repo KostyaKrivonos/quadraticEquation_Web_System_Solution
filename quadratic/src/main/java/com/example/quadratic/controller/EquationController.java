@@ -19,8 +19,13 @@ import java.util.List;
 @Controller
 @ComponentScan
 public class EquationController {
-    @Autowired
+
     private QuadraticEquationService quadraticEquationService;
+
+    @Autowired
+    public EquationController(QuadraticEquationService quadraticEquationService) {
+        this.quadraticEquationService = quadraticEquationService;
+    }
 
     private static List<QuadraticEquation> equations = new ArrayList<>();
 

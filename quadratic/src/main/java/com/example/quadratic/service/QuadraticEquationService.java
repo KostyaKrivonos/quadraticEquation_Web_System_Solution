@@ -1,8 +1,6 @@
 package com.example.quadratic.service;
 
-import com.example.quadratic.exception.InfinityOrNaNException;
-import com.example.quadratic.exception.NoRootEquationException;
-import com.example.quadratic.exception.NotFoundEquationException;
+import com.example.quadratic.exception.NoSolutionEquationException;
 import com.example.quadratic.model.QuadraticEquation;
 import com.example.quadratic.model.dto.QuadraticEquationDto;
 import com.example.quadratic.repository.QuadraticEquationRepository;
@@ -10,8 +8,7 @@ import com.example.quadratic.request.QuadraticEquationRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,13 +17,18 @@ import java.util.List;
 @Slf4j
 @Component
 public class QuadraticEquationService {
-    @Autowired
+
     private QuadraticEquationRepository quadraticEquationRepository;
-    @Autowired
+
     private ModelMapper modelMapper;
 
+    @Autowired
+    public QuadraticEquationService(QuadraticEquationRepository quadraticEquationRepository, ModelMapper modelMapper) {
+        this.quadraticEquationRepository = quadraticEquationRepository;
+        this.modelMapper = modelMapper;
+    }
 
-    public ResponseEntity<QuadraticEquationDto> calculate(QuadraticEquationRequest request) {
+    public HttpStatus calculate(QuadraticEquationRequest request) {
 
         QuadraticEquation quadraticEquation = quadraticEquationRepository.findByABC(request.getA(), request.getB(), request.getC());// check for the existence of an equation
         if (quadraticEquation == null) {
@@ -40,54 +42,49 @@ public class QuadraticEquationService {
             if (D > 0) {
                 x1 = (-b + Math.sqrt(D)) / (2 * a);
                 x2 = (-b - Math.sqrt(D)) / (2 * a);
-                List<Double> roots = checkOnInfinityOrNaN(x1,x2);
-                log.info("[x] [D > 0] Equation has two roots: x1 = [{}], x2 = [{}]", roots.get(0), roots.get(1));
-                QuadraticEquation equationTwoRoots = quadraticEquationRepository.save(new QuadraticEquation(a, b, c, D, roots.get(0), roots.get(1)));
-                return ResponseEntity.ok(modelMapper.map(equationTwoRoots, QuadraticEquationDto.class));
+                checkOnInfinityOrNaNTwoRoots(x1, x2);
+                log.info("[x] [D > 0] Equation has two roots: x1 = [{}], x2 = [{}]", x1, x2);
+                quadraticEquationRepository.save(new QuadraticEquation(a, b, c, D, x1, x2));
+                return HttpStatus.OK;
             }
             if (D == 0) {
                 x1 = -b / (2 * a);
+                checkOnInfinityOrNaNOneRoot(x1);
                 log.info("[x] [D == 0] Equation has one roots: x1 = [{}]", x1);
-                QuadraticEquation equationOneRoots = quadraticEquationRepository.save(new QuadraticEquation(a, b, c, D, x1));
-                return ResponseEntity.ok(modelMapper.map(equationOneRoots, QuadraticEquationDto.class));
-            }
-            if (D < 0) {
-                D = D / 2;
-                x1 = (-b + Math.sqrt(D)) / 2 * a;
-                x2 = (-b - Math.sqrt(D)) / 2 * a;
-                List<Double> roots = checkOnInfinityOrNaN(x1,x2);
-                log.info("[x] [D < 0] Equation has complex roots: x1 = [{}], x1 = [{}], ", roots.get(0), roots.get(1));
-                QuadraticEquation equationOneRoots = quadraticEquationRepository.save(new QuadraticEquation(a, b, c, D, roots.get(0), roots.get(1)));
-                return ResponseEntity.ok(modelMapper.map(equationOneRoots, QuadraticEquationDto.class));
-            } else throw new NoRootEquationException();
+                quadraticEquationRepository.save(new QuadraticEquation(a, b, c, D, x1));
+                return HttpStatus.OK;
+            } else throw new NoSolutionEquationException();
         } else
-            return ResponseEntity.ok(modelMapper.map(quadraticEquation, QuadraticEquationDto.class));
+            log.info("[x] Equation is present: [{}]", quadraticEquation);
+        return HttpStatus.OK;
     }
 
     public List<QuadraticEquationDto> getAll() {
         List<QuadraticEquationDto> equationDtos = new ArrayList<>();
         List<QuadraticEquation> equations = quadraticEquationRepository.findAll();
         log.info("[x] Got all Quadratic Equation.");
-        if (equations != null) {
-            for (QuadraticEquation equation : equations) {
-                QuadraticEquationDto dto = modelMapper.map(equation, QuadraticEquationDto.class);
-                equationDtos.add(dto);
-            }
-            return equationDtos;
-        } else throw new NotFoundEquationException();
+        for (QuadraticEquation equation : equations) {
+            QuadraticEquationDto dto = modelMapper.map(equation, QuadraticEquationDto.class);
+            equationDtos.add(dto);
+        }
+        return equationDtos;
     }
 
-    private List<Double> checkOnInfinityOrNaN(Double x1, Double x2) {
+    private List<Double> checkOnInfinityOrNaNTwoRoots(Double x1, Double x2) {
         List<Double> roots = new ArrayList<>();
         if (x1.isInfinite() || x1.isNaN() && x2.isInfinite() || x2.isNaN()) {
-            throw new InfinityOrNaNException();
+            log.info("[x] x1 is [{}], x2 is [{}].", x1, x2);
+            throw new NoSolutionEquationException();
         } else roots.add(x1);
         roots.add(x2);
         return roots;
     }
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
+    private Double checkOnInfinityOrNaNOneRoot(Double x1) {
+        if (x1.isInfinite() || x1.isNaN()) {
+            log.info("[x] x1 is [{}].", x1);
+            throw new NoSolutionEquationException();
+        } else
+            return x1;
     }
 }
