@@ -1,4 +1,4 @@
-package com.example.quadratic.quadratic.ControllerIntegrationTest;
+package com.example.quadratic.quadratic.ServiceIntegrationTest;
 
 import com.example.quadratic.controller.EquationController;
 import com.example.quadratic.exception.NoSolutionEquationException;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
  * 13.02.19
  */
 
-public class TestController {
+public class TestService {
     private EquationController equationController;
 
     @Before
