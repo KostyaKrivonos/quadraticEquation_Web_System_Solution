@@ -10,19 +10,23 @@
 
 <form th:action="@{/calculation}"
       th:object="${equationRequest}" method="POST">
+    Only numbers.
+    <br/>
     a:
-    <input type="text" th:field="*{a}"/>
+    <input type="text" th:field="*{a}" pattern="^-?[0-9][\.\d]*(,\d+)?$"/>
     <br/>
     b:
-    <input type="text" th:field="*{b}"/>
+    <input type="text" th:field="*{b}" pattern="^-?[0-9][\.\d]*(,\d+)?$">
     <br/>
     c:
-    <input type="text" th:field="*{c}"/>
+    <input type="text" th:field="*{c}" pattern="^-?[0-9][\.\d]*(,\d+)?$">
     <br/>
     <input type="submit" value="Calculation"/>
 </form>
 
 <br/>
-
+<div th:if="${errorMessage}" th:utext="${errorMessage}"
+     style="color:red;font-style:italic;">
+</div>
 </body>
 </html>

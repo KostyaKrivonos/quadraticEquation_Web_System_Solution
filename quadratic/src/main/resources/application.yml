@@ -30,5 +30,7 @@ spring:
   thymeleaf:
     mode: LEGACYHTML5
     cache: false
+message:
+  error: "Equation has no solution.Enter valid data."
 server:
   port: 8080

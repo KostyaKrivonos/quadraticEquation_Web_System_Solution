@@ -1,6 +1,5 @@
 package com.example.quadratic.quadratic.ServiceIntegrationTest;
 
-import com.example.quadratic.exception.NoSolutionEquationException;
 import com.example.quadratic.model.dto.QuadraticEquationDto;
 import com.example.quadratic.repository.QuadraticEquationRepository;
 import com.example.quadratic.request.QuadraticEquationRequest;
@@ -45,17 +44,32 @@ public class TestService {
     }
 
     @Test
-    public void testCalculation_NoRootException() {
+    public void testCalculationoSolution_BadRequest() {
         QuadraticEquationService equationService = mock(QuadraticEquationService.class);
         QuadraticEquationRequest equationRequest = new QuadraticEquationRequest();
         equationRequest.setA(0.0);
         equationRequest.setB(0.0);
         equationRequest.setC(36.0);
-        when(equationService.calculate(equationRequest)).thenThrow(new NoSolutionEquationException());
+        when(equationService.calculate(equationRequest)).thenReturn(HttpStatus.BAD_REQUEST);
+        HttpStatus status = equationService.calculate(equationRequest);
+        assertThat(HttpStatus.BAD_REQUEST)
+                .isEqualTo(status);
     }
 
     @Test
+    public void testCalculationEnterNull_BadRequest() {
+        QuadraticEquationService equationService = mock(QuadraticEquationService.class);
+        QuadraticEquationRequest equationRequest = new QuadraticEquationRequest();
+        equationRequest.setA(null);
+        equationRequest.setB(null);
+        equationRequest.setC(null);
+        when(equationService.calculate(equationRequest)).thenReturn(HttpStatus.BAD_REQUEST);
+        HttpStatus status = equationService.calculate(equationRequest);
+        assertThat(HttpStatus.BAD_REQUEST)
+                .isEqualTo(status);
+    }
 
+    @Test
     public void testGetAll_returnListQuadraticEquationDto() {
         QuadraticEquationService equationService = mock(QuadraticEquationService.class);
         List<QuadraticEquationDto> equationDtos = new ArrayList<>();

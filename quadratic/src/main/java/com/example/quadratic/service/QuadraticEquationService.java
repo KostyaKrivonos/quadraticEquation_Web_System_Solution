@@ -1,6 +1,5 @@
 package com.example.quadratic.service;
 
-import com.example.quadratic.exception.NoSolutionEquationException;
 import com.example.quadratic.model.QuadraticEquation;
 import com.example.quadratic.model.dto.QuadraticEquationDto;
 import com.example.quadratic.repository.QuadraticEquationRepository;
@@ -20,6 +19,7 @@ public class QuadraticEquationService {
 
     private QuadraticEquationRepository quadraticEquationRepository;
 
+    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
@@ -27,32 +27,37 @@ public class QuadraticEquationService {
         this.quadraticEquationRepository = quadraticEquationRepository;
     }
 
-    public HttpStatus calculate(QuadraticEquationRequest request) {
-
-        QuadraticEquation quadraticEquation = quadraticEquationRepository.findByABC(request.getA(), request.getB(), request.getC());// check for the existence of an equation
+    public HttpStatus calculate(QuadraticEquationRequest equationRequest) {
+        QuadraticEquation quadraticEquation = quadraticEquationRepository.findByABC(equationRequest.getA(), equationRequest.getB(), equationRequest.getC());// check for the existence of an equation
         if (quadraticEquation == null) {
             Double a, b, c, D;
             Double x1, x2;
-            a = request.getA();
-            b = request.getB();
-            c = request.getC();
+            a = equationRequest.getA();
+            b = equationRequest.getB();
+            c = equationRequest.getC();
             D = b * b - 4 * a * c;
 
             if (D > 0) {
                 x1 = (-b + Math.sqrt(D)) / (2 * a);
                 x2 = (-b - Math.sqrt(D)) / (2 * a);
-                checkOnInfinityOrNaNTwoRoots(x1, x2);
-                log.info("[x] [D > 0] Equation has two roots: x1 = [{}], x2 = [{}]", x1, x2);
-                quadraticEquationRepository.save(new QuadraticEquation(a, b, c, D, x1, x2));
-                return HttpStatus.OK;
+                HttpStatus status = checkOnInfinityOrNaNTwoRoots(x1, x2);
+                if (!status.is4xxClientError()) {
+                    log.info("[x] [D > 0] Equation has two roots: x1 = [{}], x2 = [{}]", x1, x2);
+                    quadraticEquationRepository.save(new QuadraticEquation(a, b, c, D, x1, x2));
+                    return HttpStatus.OK;
+                } else return HttpStatus.BAD_REQUEST;
+
             }
             if (D == 0) {
                 x1 = -b / (2 * a);
-                checkOnInfinityOrNaNOneRoot(x1);
-                log.info("[x] [D == 0] Equation has one roots: x1 = [{}]", x1);
-                quadraticEquationRepository.save(new QuadraticEquation(a, b, c, D, x1));
-                return HttpStatus.OK;
-            } else throw new NoSolutionEquationException();
+                HttpStatus status = checkOnInfinityOrNaNOneRoot(x1);
+                if (!status.is4xxClientError()) {
+                    log.info("[x] [D == 0] Equation has one roots: x1 = [{}]", x1);
+                    quadraticEquationRepository.save(new QuadraticEquation(a, b, c, D, x1));
+                    return HttpStatus.OK;
+                } else return HttpStatus.BAD_REQUEST;
+
+            } else return HttpStatus.BAD_REQUEST;
         } else
             log.info("[x] Equation is present: [{}]", quadraticEquation);
         return HttpStatus.OK;
@@ -69,21 +74,17 @@ public class QuadraticEquationService {
         return equationDtos;
     }
 
-    private List<Double> checkOnInfinityOrNaNTwoRoots(Double x1, Double x2) {
+    private HttpStatus checkOnInfinityOrNaNTwoRoots(Double x1, Double x2) {
         List<Double> roots = new ArrayList<>();
-        if (x1.isInfinite() || x1.isNaN() && x2.isInfinite() || x2.isNaN()) {
+        if (x1.isInfinite() || x1.isNaN() && x2.isInfinite() || x2.isNaN())
             log.info("[x] x1 is [{}], x2 is [{}].", x1, x2);
-            throw new NoSolutionEquationException();
-        } else roots.add(x1);
-        roots.add(x2);
-        return roots;
+        return HttpStatus.BAD_REQUEST;
+
     }
 
-    private Double checkOnInfinityOrNaNOneRoot(Double x1) {
-        if (x1.isInfinite() || x1.isNaN()) {
+    private HttpStatus checkOnInfinityOrNaNOneRoot(Double x1) {
+        if (x1.isInfinite() || x1.isNaN())
             log.info("[x] x1 is [{}].", x1);
-            throw new NoSolutionEquationException();
-        } else
-            return x1;
+        return HttpStatus.BAD_REQUEST;
     }
 }
