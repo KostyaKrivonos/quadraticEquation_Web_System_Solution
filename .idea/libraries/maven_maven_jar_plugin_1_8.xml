@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="maven:maven-jar-plugin:1.8" type="repository">
+    <properties maven-id="maven:maven-jar-plugin:1.8" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/maven/maven-jar-plugin/1.8/maven-jar-plugin-1.8.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/commons-jelly/commons-jelly-tags-velocity/1.0/commons-jelly-tags-velocity-1.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.0/commons-lang-2.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/velocity/velocity/1.4/velocity-1.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/velocity/velocity-dep/1.4/velocity-dep-1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/QuadraticEquation_Web_System_Solution.iml" filepath="$PROJECT_DIR$/QuadraticEquation_Web_System_Solution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/quadratic/quadratic.iml" filepath="$PROJECT_DIR$/quadratic/quadratic.iml" />
     </modules>
   </component>
 </project>
