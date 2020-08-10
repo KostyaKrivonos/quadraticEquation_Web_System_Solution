@@ -61,7 +61,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549289942301" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../cybermias-back-end-v2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -114,7 +114,7 @@
       <workItem from="1549973978933" duration="209000" />
       <workItem from="1597049167798" duration="905000" />
       <workItem from="1597050140711" duration="2574000" />
-      <workItem from="1597059732001" duration="2518000" />
+      <workItem from="1597059732001" duration="3394000" />
     </task>
     <task id="LOCAL-00001" summary="new branch refactoring">
       <created>1597053320526</created>
@@ -158,10 +158,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="130" y="0" width="1086" height="723" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1597051320219" />
-    <state x="461" y="120" width="424" height="479" key="FileChooserDialogImpl" timestamp="1597061219157">
+    <state x="461" y="120" width="424" height="479" key="FileChooserDialogImpl" timestamp="1597062878815">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="461" y="120" width="424" height="479" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1597061219157" />
+    <state x="461" y="120" width="424" height="479" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1597062878815" />
     <state x="496" y="267" key="Github.CreateGistDialog" timestamp="1597053159066">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
